@@ -49,7 +49,7 @@ int main()
 			}
 		}
 
-		//std::cout << "Temps depuis la dernière frame:" << clock.getElapsedTime().asSeconds() << std::endl;
+		//std::cout << "Temps depuis la derniï¿½re frame:" << clock.getElapsedTime().asSeconds() << std::endl;
 		sf::Time elapsed = clock.restart();
 		float dt = elapsed.asSeconds();
 
