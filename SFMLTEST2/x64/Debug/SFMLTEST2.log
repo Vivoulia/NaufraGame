@@ -1,0 +1,2 @@
+﻿  main.cpp
+d:\doc\documents\gitsave\naufragame\sfmltest2\main.cpp(1): fatal error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory

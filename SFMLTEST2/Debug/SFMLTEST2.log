@@ -1,2 +1,3 @@
 ﻿  main.cpp
-  SFMLTEST2.vcxproj -> D:\Doc\Documents\Visual Studio 2017\Project\Test\SFMLTEST2\Debug\SFMLTEST2.exe
+d:\doc\documents\gitsave\naufragame\sfmltest2\main.cpp(36): warning C4018: '<' : incompatibilité signed/unsigned
+  SFMLTEST2.vcxproj -> D:\Doc\Documents\GitSave\NaufraGame\SFMLTEST2\Debug\SFMLTEST2.exe
