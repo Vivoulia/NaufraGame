@@ -10,7 +10,7 @@ public:
 	std::vector<ElementGraphique*> getTabTuile() const;
 	~TileMap();
 	
-private:
+protected:
 	sf::Texture m_tileset;
 	//Tableau element graphique contenant des pointeurs Tuiles (polymorphisme) 
 	std::vector<ElementGraphique*> m_pTabTuile; 

@@ -1,14 +1,14 @@
 #include "Character.h"
+#include <iostream>
 
 
-Character::Character(std::string texture) : m_vx(0), m_vy(0), m_px(0), m_py(0), m_vmax(75.0)
+Character::Character(std::string texture) :Entite(20, 50, 20, 10),  m_vx(0), m_vy(0), m_vmax(75.0)
 {
 	if (!m_texture.loadFromFile(texture))
 	{
 		std::cout << "mdr ya pas la texture de baba" << std::endl;
 	}
 	setTexture(m_texture);
-	std::cout << m_px << "  " << m_py << std::endl;
 }
 
 //met à jour la position du personnage en fonction de sa vitesse et des évènements clavier

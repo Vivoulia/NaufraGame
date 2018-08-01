@@ -1,5 +1,5 @@
 #include "AnimatedSprite.h"
-
+#include <iostream>
 
 
 AnimatedSprite::AnimatedSprite() : m_time(0), m_rect(0, 128, 64, 64), m_length(64), m_height(64), m_frame(0)

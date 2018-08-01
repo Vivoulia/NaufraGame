@@ -1,8 +1,7 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <iostream>
+
 #include "SFML/Graphics/Sprite.hpp"
-#include <string>
+#include "SFML/Graphics.hpp"
 
 class AnimatedSprite: public sf::Sprite
 {
@@ -12,7 +11,7 @@ public:
 	void orient(int direction);
 	~AnimatedSprite();
 
-private:
+protected:
 	sf::IntRect m_rect;
 	sf::Sprite m_sprite;
 	sf::Sprite* m_pSprite;

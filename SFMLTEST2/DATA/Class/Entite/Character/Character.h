@@ -1,10 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <string>
-#include "AnimatedSprite.h"
+#include "SFML/Graphics.hpp"
+#include "../Entite.h"
 
-class Character: public AnimatedSprite
+class Character: public Entite
 {
 public:
 	Character(std::string texture);
@@ -12,12 +10,10 @@ public:
 	sf::Vector2f getPos() const;
 	~Character();
 
-private:
+protected:
 	sf::Texture m_texture;
 	float m_vmax;
 	float m_vx;
 	float m_vy;
-	float m_px;
-	float m_py;
 };
 

@@ -9,7 +9,7 @@ public:
 	Tuile(sf::VertexArray quad, sf::Texture* texture, int id);
 	~Tuile();
 	sf::Texture* getTexture() const;
-private:
+protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::VertexArray m_quad; 
 	sf::Texture* m_texture; //Pointeur vers la texture de la tilesheet 

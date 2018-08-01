@@ -2,12 +2,11 @@
 #include <iostream>
 #include "TIleMap.h"
 #include "ElementGraphique.h"
-#include "Character.h"
+#include "Baba.h"
+#include "Hitbox.h"
 
 int main()
 {
-	sf::Texture* textureBaba(0);
-	sf::Sprite spriteBaba;
 	sf::View view;
 	view.setSize(sf::Vector2f(800, 600));
 	sf::Vector2f center;
@@ -15,12 +14,12 @@ int main()
 	int yborder(1500);
 
 	TileMap carte;
-	if (!carte.load("test.txt"))
+	if (!carte.load("tileset3_doc.txt"))
 		return -1;
 
 	std::vector<ElementGraphique*> pileAffichageTileMap = carte.getTabTuile();
 
-	Character baba("walk.png");
+	Baba baba;
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "NaufraGame tests SFML");
 	sf::Clock clock; 
@@ -57,6 +56,8 @@ int main()
 			window.draw(*pileAffichageTileMap[i]);
 		}
 		window.draw(baba); //affichage du sprite
+		baba.getHitBox()->setCoord(baba.getPosition().x, baba.getPosition().y);
+		window.draw(*baba.getHitBox());
 		window.display();
 	}
 

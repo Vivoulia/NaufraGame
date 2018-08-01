@@ -24,7 +24,7 @@ int to_int(char c)
 bool TileMap::load(std::string fichier)
 {
 	
-	std::ifstream map("test.txt", std::ios::in);
+	std::ifstream map(fichier, std::ios::in);
 	if (map)
 	{
 		char carac; //Caractère pour la lecture du fichier caractère par caracère
