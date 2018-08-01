@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-AnimatedSprite::AnimatedSprite() : m_time(0), m_rect(0, 128, 64, 64), m_length(64), m_height(64), m_frame(0)
+AnimatedSprite::AnimatedSprite(int textRect_width, int textRect_height, int textRect_top, int textRect_left) : m_time(0), m_rect(textRect_left, textRect_top, textRect_width, textRect_height), m_length(64), m_height(64), m_frame(0)
 {
 	setTextureRect(m_rect);
 }
@@ -39,7 +39,6 @@ void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
 		}
 	}
 	m_rect.left = m_length * m_frame; 
-	std::cout << m_frame << std::endl; //debug
 	setTextureRect(m_rect); //mise à jour du sprite
 }
 

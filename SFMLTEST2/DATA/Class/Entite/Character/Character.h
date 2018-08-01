@@ -5,7 +5,7 @@
 class Character: public Entite
 {
 public:
-	Character(std::string texture);
+	Character(int textRect_width, int textRect_height, int textRect_top, int textRect_left, int hitbox_x, int hitbox_y, int hitbox_largeur, int hitbox_hauteur, std::string texture);
 	void update(int xborder, int yborder, float dt);
 	sf::Vector2f getPos() const;
 	~Character();

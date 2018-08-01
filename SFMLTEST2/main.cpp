@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "TIleMap.h"
-#include "ElementGraphique.h"
-#include "Baba.h"
-#include "Hitbox.h"
+#include "DATA/Class/Terrain/TileMap.h"
+#include "DATA/Class/Terrain/ElementGraphique.h"
+#include "DATA/Class/Entite/Character/Baba.h"
+#include "DATA/Class/Hitbox.h"
+#include "DATA/Class/Entite/Decors/Maison.h"
+#include "DATA/Class/Entite/Decors/Arbre.h"
 
 int main()
 {
@@ -20,6 +22,10 @@ int main()
 	std::vector<ElementGraphique*> pileAffichageTileMap = carte.getTabTuile();
 
 	Baba baba;
+	Maison maison;
+	Arbre arbre;
+	maison.setPosition(sf::Vector2f(100, 100));
+	arbre.setPosition(sf::Vector2f(300, 100));
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "NaufraGame tests SFML");
 	sf::Clock clock; 
@@ -56,8 +62,11 @@ int main()
 			window.draw(*pileAffichageTileMap[i]);
 		}
 		window.draw(baba); //affichage du sprite
+		/*GESTION TEMPORAIRE DE LA HITBOX*/
 		baba.getHitBox()->setCoord(baba.getPosition().x, baba.getPosition().y);
 		window.draw(*baba.getHitBox());
+		window.draw(maison);
+		window.draw(arbre);
 		window.display();
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "Decor.h"
-class Arbre : public Decor
+class Maison : public Decor
 {
 public:
-	Arbre();
+	Maison();
 };
