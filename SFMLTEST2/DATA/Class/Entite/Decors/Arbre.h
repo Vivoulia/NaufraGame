@@ -3,5 +3,5 @@
 class Arbre : public Decor
 {
 public:
-	Arbre();
+	Arbre(float px, float py);
 };

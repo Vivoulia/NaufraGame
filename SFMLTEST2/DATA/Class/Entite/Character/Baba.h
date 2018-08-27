@@ -4,5 +4,5 @@
 class Baba : public Character
 {
 	public:
-		Baba();
+		Baba(float px, float py);
 };

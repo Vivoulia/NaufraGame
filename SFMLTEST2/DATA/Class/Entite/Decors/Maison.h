@@ -3,5 +3,5 @@
 class Maison : public Decor
 {
 public:
-	Maison();
+	Maison(float px, float py);
 };

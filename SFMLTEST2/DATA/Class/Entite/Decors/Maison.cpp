@@ -1,7 +1,7 @@
 #include "Maison.h"
  
 
-Maison::Maison(): Decor(199,199,0,0,100,100,10,100,"DATA/Ressources/Textures/Maison.png")
+Maison::Maison(float px, float py): Decor(px, py, 199,199,0,0,20,100,150,95,"DATA/Ressources/Textures/Maison.png")
 {
 
 }
