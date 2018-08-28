@@ -58,3 +58,17 @@ Entite::~Entite()
 {
 	delete hitbox;
 }
+sf::Vector2f Entite::getPos() const
+{
+	return sf::Vector2f(m_px, m_py);
+}
+
+void Entite::setZorder(int zorder)
+{
+	m_zorder = zorder;
+}
+
+int Entite::getZorder() const
+{
+	return m_zorder;
+}

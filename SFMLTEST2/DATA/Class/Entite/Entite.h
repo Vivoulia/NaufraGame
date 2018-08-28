@@ -14,10 +14,14 @@ class Entite : public AnimatedSprite
 		void setMaxHealth(int maxHealth);
 		void setHealth(int health);
 		//void update();
+		sf::Vector2f getPos() const;
+		void setZorder(int zorder);
+		int getZorder() const;
 	protected:
 		sf::Texture m_texture;
 		float m_px;
 		float m_py;
+		int m_zorder;
 		float m_maxHealth;
 		float m_health;
 		Hitbox* hitbox;

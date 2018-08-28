@@ -86,6 +86,7 @@ int main()
 		return -1;
 
 	std::vector<ElementGraphique*> pileAffichageTileMap = carte.getTabTuile();
+	std::vector<Entite*> pileAffichageEntite = carte.getTabEntite();
 
 	Baba player1(450, 450);
 	Papy papy(310, 120);
@@ -177,6 +178,8 @@ int main()
 			}
 		}
 		//std::cout << "Temps depuis la derniere frame:" << clock.getElapsedTime().asSeconds() << std::endl;
+
+		pileAffichageEntite = carte.getTabEntite();
 		sf::Time elapsed = clock.restart();
 		float dt = elapsed.asSeconds();
 		//mise à jour du personnage principal
@@ -198,12 +201,23 @@ int main()
 		{
 			camera.setCenter(center);
 		}
+		center = carte.getCurrentCharac()->getPos();
+		view.setCenter(center);
 		window.clear(sf::Color::White);
+
 		//affichage de la tilemap
 		for (int i(0); i < pileAffichageTileMap.size(); i++)
 		{
 			window.draw(*pileAffichageTileMap[i]);
 		}
+		for (int i(0); i < pileAffichageEntite.size(); i++)
+		{
+			window.draw(*pileAffichageEntite[i]);
+		} 
+
+		carte.getCurrentCharac()->update(xborder, yborder, dt);
+		carte.addEntiteMoved(carte.getCurrentCharac());
+		carte.update();
 		//affichage des sprite (z order temporaire)
 
 		window.draw(maison);

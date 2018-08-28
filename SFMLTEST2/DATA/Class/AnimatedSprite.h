@@ -9,6 +9,7 @@ public:
 	AnimatedSprite(float px, float py, int width, int height, int top, int left);
 	void animate(float m_vx, float m_vy, float dt);
 	void orient(int direction);
+	int getHeight() const;
 	~AnimatedSprite();
 
 protected:

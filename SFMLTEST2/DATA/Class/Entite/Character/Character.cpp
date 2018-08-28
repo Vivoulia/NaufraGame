@@ -25,7 +25,7 @@ std::string Character::getMode()
 	return m_mode;
 }
 
-//met à jour la position du personnage en fonction de sa vitesse et des évènements clavier
+//met ï¿½ jour la position du personnage en fonction de sa vitesse et des ï¿½vï¿½nements clavier
 void Character::update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hitbox* obstacle2, Hitbox* obstacle3)
 {
 	m_walkInput.x = 0;
@@ -80,7 +80,7 @@ void Character::update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hi
 			}
 		}
 	}
-	//vérification du non dépassement de la vitesse max
+	//vï¿½rification du non dï¿½passement de la vitesse max
 	if (m_vy < 0 && m_vy < -m_vmax) { m_vy = -m_vmax; }; 
 	if (m_vy > 0 && m_vy > m_vmax) { m_vy = m_vmax; };
 	if (m_vx < 0 && m_vx < -m_vmax) { m_vx = -m_vmax; };
@@ -91,16 +91,16 @@ void Character::update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hi
 	//std::cout << m_vx << "  " << m_vy << std::endl;
 	//std::cout << dt << std::endl;
 
-	//vérification des collisions avec les bords de la carte
+	//vï¿½rification des collisions avec les bords de la carte
 	if (m_px > xborder - 48.0) { m_px = float(xborder - 48); m_vx = 0.0; std::cout << "hors limite x max " << std::endl;; };
 	if (m_px < -32) { std::cout << m_px << "  " << m_py << std::endl; m_px = -32; m_vx = 0; std::cout << "hors limite x min " << std::endl;;};
 	if (m_py > yborder - 48.0) { m_py = float(yborder - 48); m_vy = 0.0; std::cout << "hors limite y max " << std::endl;;};
 	if (m_py < -64) { m_py = -64; m_vy = 0; std::cout << "hors limite y min " << std::endl; };
 
 
-	//mise à jour hitbox
+	//mise ï¿½ jour hitbox
 	getHitBox()->setCoord(m_px, m_py);
-	//mise à jour hurtbox
+	//mise ï¿½ jour hurtbox
 	if (m_state == "attack")
 	{
 		sf::Vector2f center = getCenter();
@@ -124,7 +124,7 @@ void Character::update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hi
 	}
 	
 
-	//vérification des hitboxes (temporaire, la version finale se fera avec une boucle qui explore toutes les entités)
+	//vï¿½rification des hitboxes (temporaire, la version finale se fera avec une boucle qui explore toutes les entitï¿½s)
 	if (getHitBox()->intersect(obstacle1))
 	{
 		m_vy = 0;
@@ -182,14 +182,14 @@ void Character::update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hi
 		}*/
 	}
 
-	//sauvegarde de la position précédente
+	//sauvegarde de la position prï¿½cï¿½dente
 	m_spx = m_px;
 	m_spy = m_py;
 	//std::cout << m_spy << std::endl;
-	//reposionnement de l'entité (+= vitesse*temps)
+	//reposionnement de l'entitï¿½ (+= vitesse*temps)
 	m_py += m_vy * dt;
 	m_px += m_vx * dt;
-	//déplacement du sprite
+	//dï¿½placement du sprite
 	setPosition(getPos());
 	//animation (AnimatedSprite::animate)
 	animate(m_vx, m_vy, dt);

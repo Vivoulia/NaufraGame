@@ -17,7 +17,7 @@ public:
 
 protected:
 	sf::Texture m_texture;
-	float m_acc; //accélération
+	float m_acc; //accï¿½lï¿½ration
 	float m_vmax; //vitesse de pointe
 	float m_vx; //vitesse en x
 	float m_vy; //vitesse en y

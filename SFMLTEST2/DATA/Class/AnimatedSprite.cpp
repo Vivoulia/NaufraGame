@@ -5,7 +5,7 @@
 AnimatedSprite::AnimatedSprite(float px, float py, int textRect_width, int textRect_height, int textRect_top, int textRect_left) : m_time(0), m_rect(textRect_left, textRect_top, textRect_width, textRect_height), m_length(textRect_width), m_height(textRect_height), m_frame(0), m_state("none")
 {
 	setTextureRect(m_rect);
-	setPosition(sf::Vector2f(px, py));
+	this->setOrigin(0, textRect_height);
 }
 
 //oriente le personnage (haut : 0, gauche : 1, bas : 2, droite : 3)
@@ -15,7 +15,7 @@ void AnimatedSprite::orient(int direction)
 	setTextureRect(m_rect);
 }
 
-//avance l'animation d'une frame et si la boucle est finie, revient à la première frame
+//avance l'animation d'une frame et si la boucle est finie, revient ï¿½ la premiï¿½re frame
 void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
 {
 	if (m_state == "walk" || m_state == "none")
@@ -47,7 +47,7 @@ void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
 			}
 		}
 		m_rect.left = m_length * m_frame;
-		setTextureRect(m_rect); //mise à jour du sprite
+		setTextureRect(m_rect); //mise ï¿½ jour du sprite
 	}
 	else if (m_state == "attack")
 	{
@@ -70,6 +70,13 @@ void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
 	
 }
 
+int AnimatedSprite::getHeight() const
+{
+	return m_height;
+}
+
 AnimatedSprite::~AnimatedSprite()
 {
 }
+
+
