@@ -5,7 +5,7 @@
 class Hitbox: public sf::RectangleShape
 {
 public:
-	Hitbox(float px, float py, int x, int y, int largeur,int hauteur);
+	Hitbox(float px, float py, int x, int y, int largeur,int hauteur, int hauteurSprite);
 	void setCoord(float x, float y);
 	void setBoxSize(int sx, int sy);
 	void setPr(float prx, float pry); //changer position relative
@@ -23,4 +23,5 @@ protected:
 	int m_pry;
 	int m_sizex;
 	int m_sizey;
+	int m_hauteurSprite;
 };

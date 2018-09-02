@@ -1,11 +1,11 @@
 #pragma once
-#include "Decor.h"
+#include "Foes.h"
 #include <iostream>
-class Sbire : public Decor
+class Sbire : public Foes
 {
 public:
 	Sbire(float px, float py);
-	void update(float dt, sf::Vector2f posJoueur);
+	virtual void update(float dt, sf::Vector2f posJoueur);
 protected:
 	int m_pos;
 	float m_time;

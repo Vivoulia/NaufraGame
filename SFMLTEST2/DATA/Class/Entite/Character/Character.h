@@ -7,7 +7,7 @@ class Character: public Entite
 {
 public:
 	Character(float px, float py, int textRect_width, int textRect_height, int textRect_top, int textRect_left, int hitbox_x, int hitbox_y, int hitbox_largeur, int hitbox_hauteur, std::string texture);
-	void update(int xborder, int yborder, float dt, Hitbox* obstacle1, Hitbox* obstacle2, Hitbox* obstacle3);
+	void update(int xborder, int yborder, float dt, std::vector<Entite*>& allEntite);
 	sf::Vector2f getPos() const;
 	sf::Vector2f getCenter() const;
 	void attack(sf::Vector2f vect);

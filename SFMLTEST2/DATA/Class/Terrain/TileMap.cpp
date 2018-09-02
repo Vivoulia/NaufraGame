@@ -34,6 +34,7 @@ std::vector<std::string> split(const std::string& str, const std::string& delim)
 	} while (pos < str.length() && prev < str.length());
 	return tokens;
 }
+
 bool TileMap::load(std::string fichier)
 {
 	std::vector<int> tableauTuile = loadTileMapFile(fichier); //On charge le fichier txt de la tilemap et on initialise tous les params nécessaires
@@ -185,20 +186,23 @@ void TileMap::loadEntiteFile()
 	if (entiteFile)
 	{
 		std::string ligne; //Ligne pour la lecture ligne par ligne
-		m_currentCharac = new Baba();
+		m_currentCharac = new Baba(20,20);
 		m_currentCharac->setZorder(0);
 		m_pTabEntite.push_back(m_currentCharac);
 		int iData(0);
 		int jEntite(1); //On commence a 1 car 0 est utilisé pour le perso (pour l'instant)
+
 		int x(0);
 		int y(0);
 		int zorder(0);
+		std::string className("");
+
 		while (std::getline(entiteFile, ligne))
 		{
 			if (iData == 0)
 			{
 				std::cout << ligne << std::endl;
-				m_pTabEntite.push_back(EntiteFactory::createEntite(ligne));
+				className = ligne;
 				iData++;
 			}
 			else if (iData == 1)
@@ -211,17 +215,19 @@ void TileMap::loadEntiteFile()
 			{
 				std::cout << ligne << std::endl;
 				y = std::stoi(ligne);
-				m_pTabEntite[jEntite]->setPosition(sf::Vector2f(x, y));
+				m_pTabEntite.push_back(EntiteFactory::createEntite(x, y, className));
 				iData++;
 			}
 			else if (iData == 3)
 			{
 				std::cout << ligne << std::endl;
 				zorder = std::stoi(ligne);
-				m_pTabEntite[jEntite]->setZorder(zorder);
 				iData = 0;
+				m_pTabEntite[jEntite]->setZorder(zorder);
 				jEntite++;
 			}
+
+
 		}
 	}
 	else

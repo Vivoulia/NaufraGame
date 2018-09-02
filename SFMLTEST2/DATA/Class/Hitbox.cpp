@@ -1,20 +1,20 @@
 #include "Hitbox.h"
 
-Hitbox::Hitbox(float px, float py, int x, int y, int largeur, int hauteur):m_prx(x), m_pry(y), m_px(0), m_py(0), m_sizex(largeur), m_sizey(hauteur)
+Hitbox::Hitbox(float px, float py, int x, int y, int largeur, int hauteur, int hauteurSprite):m_prx(x), m_pry(y), m_px(0), m_py(0), m_sizex(largeur), m_sizey(hauteur), m_hauteurSprite(hauteurSprite)
 {
 	this->setSize(sf::Vector2f(largeur, hauteur));
 	this->setFillColor(sf::Color::Transparent);
 	this->setOutlineColor(sf::Color::Black);
 	this->setOutlineThickness(1.0);
 	m_px = px + m_prx;
-	m_py = py + m_pry;
+	m_py = py + m_pry - m_hauteurSprite;
 	setPosition(sf::Vector2f(m_px, m_py));
 }
 
 void Hitbox::setCoord(float x, float y)
 {
-	m_px = x+ m_prx;
-	m_py = y+ m_pry;
+	m_px = x + m_prx;
+	m_py = y + m_pry - m_hauteurSprite;
 	setPosition(sf::Vector2f(m_px, m_py));
 }
 

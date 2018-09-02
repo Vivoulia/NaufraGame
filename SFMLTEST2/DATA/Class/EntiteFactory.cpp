@@ -8,16 +8,28 @@ EntiteFactory::EntiteFactory()
 
 
 
-Entite* EntiteFactory::createEntite(std::string className)
+Entite* EntiteFactory::createEntite(float px, float py, std::string className)
 {
 	if (className == "Arbre")
 	{
-		return new Arbre();
+		return new Arbre(px, py);
 	}
 
 	else if (className == "Maison")
 	{
-		return new Maison();
+		return new Maison(px, py);
+	}
+	else if (className == "Echoppe")
+	{
+		return new Echoppe(px, py);
+	}
+	else if (className == "Papy")
+	{
+		return new Papy(px, py);
+	}
+	else if (className == "Sbire")
+	{
+		return new Sbire(px, py);
 	}
 	else
 	{
@@ -27,11 +39,11 @@ Entite* EntiteFactory::createEntite(std::string className)
 	
 }
 
-Character* EntiteFactory::createCharacter(std::string className)
+Character* EntiteFactory::createCharacter(float px, float py, std::string className)
 {
 	if (className == "Baba")
 	{
-		return new Baba();
+		return new Baba(px, py);
 	}
 	else
 	{

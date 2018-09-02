@@ -1,4 +1,5 @@
-tileset0.png
+Tileset0.png
+Entite.txt
 32
 60
 30

@@ -1,6 +1,6 @@
 #include "Papy.h"
 
-Papy::Papy(float px, float py): Decor(px, py, 40,40,0,0,0,30,40,15,"DATA/Ressources/Textures/papy_turn_head.png")
+Papy::Papy(float px, float py): Foes(px, py, 40,40,0,0,0,30,40,15,"DATA/Ressources/Textures/papy_turn_head.png")
 {
 }
 

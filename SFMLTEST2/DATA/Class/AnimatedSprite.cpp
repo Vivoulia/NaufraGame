@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-AnimatedSprite::AnimatedSprite(float px, float py, int textRect_width, int textRect_height, int textRect_top, int textRect_left) : m_time(0), m_rect(textRect_left, textRect_top, textRect_width, textRect_height), m_length(textRect_width), m_height(textRect_height), m_frame(0), m_state("none")
+AnimatedSprite::AnimatedSprite(int textRect_width, int textRect_height, int textRect_top, int textRect_left) : m_time(0), m_rect(textRect_left, textRect_top, textRect_width, textRect_height), m_length(textRect_width), m_height(textRect_height), m_frame(0), m_state("none")
 {
 	setTextureRect(m_rect);
 	this->setOrigin(0, textRect_height);

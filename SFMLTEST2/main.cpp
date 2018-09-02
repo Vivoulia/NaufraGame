@@ -8,8 +8,8 @@
 #include "DATA/Class/Entite/Decors/Maison.h"
 #include "DATA/Class/Entite/Decors/Arbre.h"
 #include "DATA/Class/Entite/Decors/Echoppe.h"
-#include "DATA/Class/Entite/Decors/Papy.h"
-#include "DATA/Class/Entite/Decors/Sbire.h"
+#include "DATA/Class/Entite/Foes/Papy.h"
+#include "DATA/Class/Entite/Foes/Sbire.h"
 
 int main()
 {	
@@ -85,16 +85,8 @@ int main()
 	if (!carte.load("tileset0_doc.txt"))
 		return -1;
 
-	std::vector<ElementGraphique*> pileAffichageTileMap = carte.getTabTuile();
-	std::vector<Entite*> pileAffichageEntite = carte.getTabEntite();
-
-	Baba player1(450, 450);
-	Papy papy(310, 120);
-	Sbire sbire(200, 200);
-	Maison maison(180, -73);
-	Arbre arbre(100, 630);
-	Echoppe echoppe(590, 75);
-
+	std::vector<ElementGraphique*> allTile = carte.getTabTuile();
+	std::vector<Entite*> allEntite = carte.getTabEntite();
 	sf::Clock clock; 
 	
 	while (window.isOpen())
@@ -126,9 +118,9 @@ int main()
 				window.close();
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				if (player1.getMode() == "combat")
+				if (carte.getCurrentCharac()->getMode() == "combat")
 				{
-					player1.attack(vect_base);
+					carte.getCurrentCharac()->attack(vect_base);
 				}
 			}
 			if (event.type == sf::Event::EventType::KeyPressed)
@@ -136,18 +128,18 @@ int main()
 				//gestion du changement de mode de jeu (combat, exploration) Hotkey : M
 				if (event.key.code == sf::Keyboard::M)
 				{
-					if (player1.getMode() == "combat")
+					if (carte.getCurrentCharac()->getMode() == "combat")
 					{
 						std::cout << "mode exploration" << std::endl;
-						player1.setMode("exploration");
+						carte.getCurrentCharac()->setMode("exploration");
 						MODE.setString("mode exploration");
 						MODE.setFillColor(sf::Color::Blue);
 						camera.zoom(1.33333333333333333f);
 					}
-					else if (player1.getMode() == "exploration")
+					else if (carte.getCurrentCharac()->getMode() == "exploration")
 					{
 						std::cout << "mode combat" << std::endl;
-						player1.setMode("combat");
+						carte.getCurrentCharac()->setMode("combat");
 						MODE.setString("mode combat");
 						MODE.setFillColor(sf::Color::Red);
 						camera.zoom(0.75f);
@@ -156,40 +148,40 @@ int main()
 				//afficher position. Hotkey : P
 				else if (event.key.code == sf::Keyboard::P)
 				{
-					std::cout << "x =" << player1.getPos().x << "y = " << player1.getPos().y << std::endl;
+					std::cout << "x =" << carte.getCurrentCharac()->getPos().x << "y = " << carte.getCurrentCharac()->getPos().y << std::endl;
 				}
 				//reset hitboxes. Hotkey : R
 				else if (event.key.code == sf::Keyboard::R)
 				{
-					maison.getHitBox()->setOutlineColor(sf::Color::Black);
-					arbre.getHitBox()->setOutlineColor(sf::Color::Black);
-					echoppe.getHitBox()->setOutlineColor(sf::Color::Black);
+					for (int i(0); i < allEntite.size(); i++)
+					{
+						allEntite[i]->getHitBox()->setOutlineColor(sf::Color::Black);
+					}
 				}
 				//faire des dégats au joueur (temporaire)
 				else if (event.key.code == sf::Keyboard::G)
 				{
-					player1.setHealth(player1.getHealth() - 10);
+					carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() - 10);
 				}
 				//soigner le joueur (temporaire)
 				else if (event.key.code == sf::Keyboard::H)
 				{
-					player1.setHealth(player1.getHealth() + 10);
+					carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() + 10);
 				}
 			}
 		}
 		//std::cout << "Temps depuis la derniere frame:" << clock.getElapsedTime().asSeconds() << std::endl;
 
-		pileAffichageEntite = carte.getTabEntite();
+		allEntite = carte.getTabEntite();
 		sf::Time elapsed = clock.restart();
 		float dt = elapsed.asSeconds();
 		//mise à jour du personnage principal
-		player1.update(xborder, yborder, dt, maison.getHitBox(), arbre.getHitBox(), echoppe.getHitBox());
-		//mise à jour des entités
-		papy.update(dt, player1.getCenter());
-		sbire.update(dt, player1.getCenter());
+		carte.getCurrentCharac()->update(xborder, yborder, dt, allEntite); 
+		carte.addEntiteMoved(carte.getCurrentCharac()); //Pb pas général (Code Vivien)
+		carte.update();
 		//mise à jour de la vue
-		center = player1.getCenter();
-		if (player1.getMode() == "exploration")
+		center = carte.getCurrentCharac()->getCenter();
+		if (carte.getCurrentCharac()->getMode() == "exploration")
 		{
 			cameraDirection = sf::Vector2i(center.x + vect.x / 3 - camera.getCenter().x, center.y + vect.y / 3 - camera.getCenter().y);
 
@@ -202,62 +194,41 @@ int main()
 			camera.setCenter(center);
 		}
 		center = carte.getCurrentCharac()->getPos();
-		view.setCenter(center);
 		window.clear(sf::Color::White);
 
-		//affichage de la tilemap
-		for (int i(0); i < pileAffichageTileMap.size(); i++)
-		{
-			window.draw(*pileAffichageTileMap[i]);
+
+		for (int i(0); i < allTile.size(); i++)
+		{	
+			//affichage des tuiles
+			window.draw(*allTile[i]);
 		}
-		for (int i(0); i < pileAffichageEntite.size(); i++)
+		for (int i(0); i < allEntite.size(); i++)
 		{
-			window.draw(*pileAffichageEntite[i]);
+			//Affichage des entités
+			window.draw(*allEntite[i]);
+			window.draw(*allEntite[i]->getHitBox());
+			//mise à jour des entités
+			allEntite[i]->update(dt, carte.getCurrentCharac()->getCenter());
 		} 
-
-		carte.getCurrentCharac()->update(xborder, yborder, dt);
-		carte.addEntiteMoved(carte.getCurrentCharac());
-		carte.update();
-		//affichage des sprite (z order temporaire)
-
-		window.draw(maison);
-		window.draw(arbre);
-		window.draw(echoppe);
-		window.draw(papy);
-		window.draw(sbire);
-		window.draw(player1);
-
-		//affichage des hitboxes
-		window.draw(*maison.getHitBox());
-		window.draw(*arbre.getHitBox());
-		window.draw(*player1.getHitBox());
-		window.draw(*echoppe.getHitBox());
-		window.draw(*papy.getHitBox());
-		window.draw(*player1.getHurtBox());
-		window.draw(*sbire.getHitBox());
 
 		//HUD//
 		window.setView(GUI);
 		window.draw(MODE);
-		if (player1.getMode() == "exploration")
+		if (carte.getCurrentCharac()->getMode() == "exploration")
 		{
 			//texte
 			window.draw(posx);
 			window.draw(posy);
 			//affichage minimap
 			window.setView(minimap);
-			for (int i(0); i < pileAffichageTileMap.size(); i++)
+			for (int i(0); i < allTile.size(); i++)
 			{
-				window.draw(*pileAffichageTileMap[i]);
+				window.draw(*allTile[i]);
 			}
-			window.draw(maison);
-			window.draw(arbre);
-			window.draw(echoppe);
-			window.draw(player1);
 		}
 		else
 		{
-			lifeBar_red.setSize(sf::Vector2f(200*(player1.getHealth() / player1.getMaxHealth()), 25));
+			lifeBar_red.setSize(sf::Vector2f(200*(carte.getCurrentCharac()->getHealth() / carte.getCurrentCharac()->getMaxHealth()), 25));
 			if (lifeBar_red.getSize().x <= 0)
 			{
 				lifeBar_red.setSize(sf::Vector2f(0, 25));
