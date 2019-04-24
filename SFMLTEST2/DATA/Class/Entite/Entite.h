@@ -17,10 +17,19 @@ class Entite : public AnimatedSprite
 		sf::Vector2f getPos() const;
 		void setZorder(int zorder);
 		int getZorder() const;
+		sf::Vector2f getCenter();
+		void setCenter(float px, float py);
+		void applyVector(sf::Vector2f vector);
+		void applySpeed(float dt);
+		sf::Vector2f unify(sf::Vector2f vect);
+		sf::Vector2f multiply(sf::Vector2f vector, float facteur);
+		sf::Vector2f makeVector(sf::Vector2f vector1, sf::Vector2f vector2);
 	protected:
 		sf::Texture m_texture;
-		float m_px;
-		float m_py;
+		sf::Vector2f m_speed;
+		sf::Vector2f m_correct; //vecteur de collision
+		sf::Vector2f m_position;
+		sf::Vector2f m_center;
 		int m_zorder;
 		float m_maxHealth;
 		float m_health;

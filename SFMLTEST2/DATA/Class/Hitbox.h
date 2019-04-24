@@ -15,13 +15,14 @@ public:
 	float gety();
 	float getsizex();
 	float getsizey();
+	sf::Vector2f getCenter();
 
 protected:
-	int m_px; 
-	int m_py;
+	sf::Vector2f m_position;
 	int m_prx;
 	int m_pry;
 	int m_sizex;
 	int m_sizey;
 	int m_hauteurSprite;
+	sf::FloatRect m_boundingBox;
 };

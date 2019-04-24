@@ -1,6 +1,6 @@
 #include "Sbire.h"
 
-Sbire::Sbire(float px, float py): Foes(px, py, 50, 50, 0, 0, 10, 30, 30, 20, "DATA/Ressources/Textures/Sbire.png"), m_pos(2), m_time(0), m_state("patrol")
+Sbire::Sbire(float px, float py): Foes(px, py, 50, 50, 0, 0, 10, 0, 30, 20, "DATA/Ressources/Textures/Sbire.png"), m_pos(2), m_time(0), m_state("patrol")
 {
 
 }

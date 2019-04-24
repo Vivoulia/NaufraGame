@@ -16,14 +16,14 @@ void AnimatedSprite::orient(int direction)
 }
 
 //avance l'animation d'une frame et si la boucle est finie, revient � la premi�re frame
-void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
+void AnimatedSprite::animate(sf::Vector2f speed, float dt)
 {
 	if (m_state == "walk" || m_state == "none")
 	{
-		if (m_vx < 0) { m_vx = -m_vx; }
-		if (m_vy < 0) { m_vy = -m_vy; }
+		if (speed.x < 0) { speed.x = -speed.x; }
+		if (speed.y < 0) { speed.y = -speed.y; }
 
-		if ((m_vx < 10) && (m_vy < 10))
+		if ((speed.x < 10) && (speed.y < 10))
 		{
 			//std::cout << "freeze ";
 			m_time = 0;
@@ -32,7 +32,7 @@ void AnimatedSprite::animate(float m_vx, float m_vy, float dt)
 		else
 		{
 			m_time += dt;
-			if (m_time > 7 / (m_vx + m_vy))
+			if (m_time > 7 / (speed.x + speed.y))
 			{
 				m_time = 0;
 				m_frame++;

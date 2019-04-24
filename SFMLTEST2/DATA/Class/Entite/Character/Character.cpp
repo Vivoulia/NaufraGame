@@ -1,7 +1,7 @@
 #include "Character.h"
 
 Character::Character(float px, float py, int textRect_width, int textRect_height, int textRect_top, int textRect_left, int hitbox_x, int hitbox_y, int hitbox_largeur, int hitbox_hauteur, std::string texture) :
-	Entite (px, py, textRect_width,  textRect_height,  textRect_top,  textRect_left, hitbox_x,  hitbox_y,  hitbox_largeur,  hitbox_hauteur, texture),  m_vx(0), m_vy(0), m_spx(px), m_spy(py)
+	Entite (px, py, textRect_width,  textRect_height,  textRect_top,  textRect_left, hitbox_x,  hitbox_y,  hitbox_largeur,  hitbox_hauteur, texture), m_spx(px), m_spy(py)
 {
 	setMode("exploration");
 }
@@ -10,13 +10,13 @@ void Character::setMode(std::string mode)
 	m_mode = mode;
 	if (m_mode == "exploration")
 	{
-		m_vmax = 200;
-		m_acc = 10;
+		m_vmax = 150;
+		m_acc = 20;
 	}
 	else if (m_mode == "combat")
 	{
-		m_vmax = 150;
-		m_acc = 100;
+		m_vmax = 100;
+		m_acc = 50;
 	}
 }
 
@@ -42,7 +42,7 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		{
 			if (!sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			{
-				m_vy -= m_acc; //acceleration en -y (haut)
+				m_speed.y -= m_acc; //acceleration en -y (haut)
 				orient(0); //orientation du sprite vers le haut
 				m_state = "walk";
 				m_walkInput.y = 1;
@@ -53,7 +53,7 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		{
 			if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			{
-				m_vy += m_acc;
+				m_speed.y += m_acc;
 				orient(2);
 				m_state = "walk";
 				m_walkInput.y = 1;
@@ -63,7 +63,7 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		{
 			if (!sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
-				m_vx -= m_acc;
+				m_speed.x -= m_acc;
 				orient(1);
 				m_state = "walk";
 				m_walkInput.x = 1;
@@ -73,7 +73,7 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		{
 			if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 			{
-				m_vx += m_acc;
+				m_speed.x += m_acc;
 				orient(3);
 				m_state = "walk";
 				m_walkInput.x = 1;
@@ -81,25 +81,25 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		}
 	}
 	//v�rification du non dépassement de la vitesse max
-	if (m_vy < 0 && m_vy < -m_vmax) { m_vy = -m_vmax; }; 
-	if (m_vy > 0 && m_vy > m_vmax) { m_vy = m_vmax; };
-	if (m_vx < 0 && m_vx < -m_vmax) { m_vx = -m_vmax; };
-	if (m_vx > 0 && m_vx > m_vmax) { m_vx = m_vmax; };
+	if (m_speed.y < 0 && m_speed.y < -m_vmax) { m_speed.y = -m_vmax; }; 
+	if (m_speed.y > 0 && m_speed.y > m_vmax) { m_speed.y = m_vmax; };
+	if (m_speed.x < 0 && m_speed.x < -m_vmax) { m_speed.x = -m_vmax; };
+	if (m_speed.x > 0 && m_speed.x > m_vmax) { m_speed.x = m_vmax; };
 
 	//debug
-	//std::cout << m_px << "  " << m_py << std::endl;
-	//std::cout << m_vx << "  " << m_vy << std::endl;
+	//std::cout << m_position.x << "  " << m_position.y << std::endl;
+	//std::cout << m_speed.x << "  " << m_speed.y << std::endl;
 	//std::cout << dt << std::endl;
 
 	//vérification des collisions avec les bords de la carte
-	if (m_px > xborder - 48.0) { m_px = float(xborder - 48); m_vx = 0.0; std::cout << "hors limite x max " << std::endl;; };
-	if (m_px < -32) { std::cout << m_px << "  " << m_py << std::endl; m_px = -32; m_vx = 0; std::cout << "hors limite x min " << std::endl;;};
-	if (m_py > yborder - 48.0) { m_py = float(yborder - 48); m_vy = 0.0; std::cout << "hors limite y max " << std::endl;;};
-	if (m_py < -64) { m_py = -64; m_vy = 0; std::cout << "hors limite y min " << std::endl; };
+	if (m_position.x > xborder - 48.0) { m_position.x = float(xborder - 48); m_speed.x = 0.0; std::cout << "hors limite x max " << std::endl;; };
+	if (m_position.x < -32) { std::cout << m_position.x << "  " << m_position.y << std::endl; m_position.x = -32; m_speed.x = 0; std::cout << "hors limite x min " << std::endl;;};
+	if (m_position.y > yborder - 48.0) { m_position.y = float(yborder - 48); m_speed.y = 0.0; std::cout << "hors limite y max " << std::endl;;};
+	if (m_position.y < -64) { m_position.y = -64; m_speed.y = 0; std::cout << "hors limite y min " << std::endl; };
 
 
 	//mise a jour hitbox
-	getHitBox()->setCoord(m_px, m_py);
+	getHitBox()->setCoord(m_position.x, m_position.y);
 	//mise a jour hurtbox
 	if (m_state == "attack")
 	{
@@ -107,9 +107,12 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 		this->getHurtBox()->setCoord(center.x, center.y);
 		for (int iEntite(0); iEntite < allEntite.size(); iEntite++)
 		{
-			if (this->getHurtBox()->intersect(allEntite[iEntite]->getHitBox()) || allEntite[iEntite]->getHitBox()->intersect(this->getHurtBox()))
+			if (this->getHurtBox()->intersect(allEntite[iEntite]->getHitBox()))
 			{
-				allEntite[iEntite]->getHurtBox()->setOutlineColor(sf::Color::White);
+				if (m_zorder != allEntite[iEntite]->getZorder())
+				{
+					allEntite[iEntite]->getHitBox()->setOutlineColor(sf::Color::White);
+				}
 			}
 		}
 	}
@@ -117,54 +120,64 @@ void Character::update(int xborder, int yborder, float dt, std::vector<Entite*>&
 	{
 		this->getHurtBox()->setBoxSize(0, 0);
 	}
-	
+
+	//sauvegarde de la position précédente OUTDATED
+	m_spx = m_position.x;
+	m_spy = m_position.y;
+	//std::cout << m_spy << std::endl;
+
 	//Vérification des Hitbox
 	for (int iEntite(0); iEntite < allEntite.size(); iEntite++)
 	{
 		if (m_zorder != allEntite[iEntite]->getZorder())
 		{
-			if (this->getHitBox()->intersect(allEntite[iEntite]->getHitBox()))
+			//Gestion de la transparence
+			if (m_zorder < allEntite[iEntite]->getZorder())
+			{
+				allEntite[iEntite]->setColor(sf::Color(255, 255, 255));
+				if (this->getGlobalBounds().intersects(allEntite[iEntite]->getGlobalBounds()))
+				{
+					allEntite[iEntite]->setColor(sf::Color(255, 255, 255, 150));
+				}
+			}
+			m_correct = sf::Vector2f(0, 0); //vecteur de correction s'il y a collision
+			if (this->getHitBox()->getGlobalBounds().intersects(allEntite[iEntite]->getHitBox()->getGlobalBounds()))
 			{
 				std::cout << "Collision" << std::endl;
-				m_vy = 0;
-				m_py = m_spy;
-				m_vx = 0;
-				m_px = m_spx;
+				m_correct = makeVector(this->getHitBox()->getCenter(), allEntite[iEntite]->getHitBox()->getCenter());
+				m_correct = unify(makeVector(this->getHitBox()->getCenter(), allEntite[iEntite]->getHitBox()->getCenter()));
+				m_position.x += (m_correct.x + (m_correct.x * std::abs(m_speed.x))) * dt;
+				m_position.y += (m_correct.y + (m_correct.y * std::abs(m_speed.y))) * dt;
 			}
 		}
-
 	}
 
-	//sauvegarde de la position précédente
-	m_spx = m_px;
-	m_spy = m_py;
-	//std::cout << m_spy << std::endl;
-	//reposionnement de l'entité (+= vitesse*temps)
-	m_py += m_vy * dt;
-	m_px += m_vx * dt;
-	//d�placement du sprite
+	applySpeed(dt);
+
+	//deplacement du sprite
 	setPosition(getPos());
 	//animation (AnimatedSprite::animate)
-	animate(m_vx, m_vy, dt);
+	animate(m_speed, dt);
 	//ralentissement auto (frottements)
-	if (m_walkInput.x == 0) {m_vx *= float(0.92);}
-	if (m_walkInput.y == 0) { m_vy *= float(0.92);}
+	if (std::abs(m_speed.x) < 10) { m_speed.x = 0; }
+	if (std::abs(m_speed.y) < 10) { m_speed.y = 0; }
+	if (m_walkInput.x == 0) { m_speed.x *= float(0.92); }
+	if (m_walkInput.y == 0) { m_speed.y *= float(0.92); }
 	//std::cout << m_state << std::endl;
 }
 
 void Character::attack(sf::Vector2f vect)
 {
-
 	if (m_state == "walk")
 	{
-		m_vx *= 0.8;
-		m_vy *= 0.8;
+		m_speed.x *= 0.9;
+		m_speed.y *= 0.8;
 	}
 	if (m_state != "attack")
 	{
 		m_state = "attack";
-		m_vx += vect.x * 200;
-		m_vy += vect.y * 200;
+		m_speed.x += vect.x * 200;
+		m_speed.y += vect.y * 200;
 		std::cout << m_state << "  " << vect.x << " " << vect.y << std::endl;
 		//hitbox de l'attaque
 		getHurtBox()->setPr(vect.x * 40, vect.y * 40);
@@ -175,12 +188,7 @@ void Character::attack(sf::Vector2f vect)
 
 sf::Vector2f Character::getPos() const
 {
-	return sf::Vector2f(m_px, m_py);
-}
-
-sf::Vector2f Character::getCenter() const
-{
-	return sf::Vector2f(m_px + 32, m_py + 40);
+	return m_position;
 }
 
 Character::~Character()
