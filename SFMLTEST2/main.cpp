@@ -13,48 +13,13 @@
 
 int main()
 {	
+	bool mode_dev(true);
 	//police d'écriture
 	sf::Font font;
 	if (!font.loadFromFile("dpcomic.ttf"))
 	{
-		// erreur...
+		std::cout << "police introuvable" << std::endl;
 	}
-	//elements du HUD
-	sf::Sprite lifeBar;
-	sf::Texture lifeBar_texture;
-	if (!lifeBar_texture.loadFromFile("DATA/Ressources/Textures/lifeBar.png"))
-	{
-		std::cout << "mdr ya pas la texture" << std::endl;
-	}
-	lifeBar.setTexture(lifeBar_texture);
-	lifeBar.setTextureRect(sf::IntRect(0, 0, 142, 44));
-	lifeBar.setPosition(10, 30);
-	lifeBar.setScale(2, 2);
-	//barre de vie
-	sf::RectangleShape lifeBar_red;
-	lifeBar_red.setSize(sf::Vector2f(200, 25));
-	lifeBar_red.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 18);
-	lifeBar_red.setFillColor(sf::Color::Red);
-	//halo jaune de la barre de vie quand on prend un coup
-	sf::RectangleShape lifeBar_subRed;
-	lifeBar_subRed.setSize(sf::Vector2f(200, 25));
-	lifeBar_subRed.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 18);
-	lifeBar_subRed.setFillColor(sf::Color::Yellow);
-	//barre de "mana"
-	sf::RectangleShape lifeBar_blue;
-	lifeBar_blue.setSize(sf::Vector2f(178, 25));
-	lifeBar_blue.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 47);
-	lifeBar_blue.setFillColor(sf::Color::Blue);
-
-	sf::Text posx("x = ", font, 25);
-	posx.setFillColor(sf::Color::Black);
-	posx.setPosition(650, 2);
-	sf::Text posy("y = ",font,25);
-	posy.setFillColor(sf::Color::Black);
-	posy.setPosition(650, 25);
-	sf::Text MODE("mode exploration", font, 30);
-	MODE.setFillColor(sf::Color::Blue);
-	MODE.setPosition(5, 0);
 
 	//paramètrage de la fenêtre
 	int resoX(800);
@@ -89,6 +54,46 @@ int main()
 	std::vector<Entite*> allEntite = carte.getTabEntite();
 	sf::Clock clock; 
 	
+	//elements du HUD
+	sf::Sprite lifeBar;
+	sf::Texture lifeBar_texture;
+	if (!lifeBar_texture.loadFromFile("DATA/Ressources/Textures/lifeBar.png"))
+	{
+		std::cout << "mdr ya pas la texture" << std::endl;
+	}
+	lifeBar.setTexture(lifeBar_texture);
+	lifeBar.setTextureRect(sf::IntRect(0, 0, 142, 44));
+	lifeBar.setPosition(10, 30);
+	lifeBar.setScale(2, 2);
+	//barre de vie
+	sf::RectangleShape lifeBar_red;
+	lifeBar_red.setSize(sf::Vector2f(200, 25));
+	lifeBar_red.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 18);
+	lifeBar_red.setFillColor(sf::Color::Red);
+	//halo jaune de la barre de vie quand on prend un coup
+	sf::RectangleShape lifeBar_subRed;
+	lifeBar_subRed.setSize(sf::Vector2f(200, 25));
+	lifeBar_subRed.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 18);
+	lifeBar_subRed.setFillColor(sf::Color::Yellow);
+	//barre de "mana"
+	sf::RectangleShape lifeBar_blue;
+	lifeBar_blue.setSize(sf::Vector2f(178, 25));
+	lifeBar_blue.setPosition((lifeBar.getPosition().x + 82), lifeBar.getPosition().y + 47);
+	lifeBar_blue.setFillColor(sf::Color::Blue);
+
+	sf::Text t_posx("x = "+ std::to_string( carte.getCurrentCharac()->getCenter().x), font, 25);
+	t_posx.setFillColor(sf::Color::Black);
+	t_posx.setPosition(600, 2);
+	sf::Text t_posy("y = " + std::to_string(carte.getCurrentCharac()->getCenter().y),font,25);
+	t_posy.setFillColor(sf::Color::Black);
+	t_posy.setPosition(600, 25);
+	sf::Text t_dt("dt : ", font, 25);
+	t_dt.setFillColor(sf::Color::Black);
+	t_dt.setPosition(600, 48);
+	sf::Text t_mode("mode exploration", font, 30);
+	t_mode.setFillColor(sf::Color::Blue);
+	t_mode.setPosition(5, 0);
+
 	while (window.isOpen())
 	{
 		window.setView(camera);
@@ -132,22 +137,23 @@ int main()
 					{
 						std::cout << "mode exploration" << std::endl;
 						carte.getCurrentCharac()->setMode("exploration");
-						MODE.setString("mode exploration");
-						MODE.setFillColor(sf::Color::Blue);
+						t_mode.setString("mode exploration");
+						t_mode.setFillColor(sf::Color::Blue);
 						camera.zoom(1.33333333333333333f);
 					}
 					else if (carte.getCurrentCharac()->getMode() == "exploration")
 					{
 						std::cout << "mode combat" << std::endl;
 						carte.getCurrentCharac()->setMode("combat");
-						MODE.setString("mode combat");
-						MODE.setFillColor(sf::Color::Red);
+						t_mode.setString("mode combat");
+						t_mode.setFillColor(sf::Color::Red);
 						camera.zoom(0.75f);
 					}
 				}
 				//afficher position. Hotkey : P
 				else if (event.key.code == sf::Keyboard::P)
 				{
+					std::cout << "x =" << carte.getCurrentCharac()->getCenter().x << "y = " << carte.getCurrentCharac()->getCenter().y << std::endl;
 					std::cout << "x =" << carte.getCurrentCharac()->getPos().x << "y = " << carte.getCurrentCharac()->getPos().y << std::endl;
 				}
 				//reset hitboxes. Hotkey : R
@@ -161,12 +167,22 @@ int main()
 				//faire des dégats au joueur (temporaire)
 				else if (event.key.code == sf::Keyboard::G)
 				{
-					carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() - 10);
+					if (mode_dev) carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() - 10);
 				}
 				//soigner le joueur (temporaire)
 				else if (event.key.code == sf::Keyboard::H)
 				{
-					carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() + 10);
+					if (mode_dev) carte.getCurrentCharac()->setHealth(carte.getCurrentCharac()->getHealth() + 10);
+				}
+				else if (event.key.code == sf::Keyboard::F3)
+				{
+					if (mode_dev) 
+					{ mode_dev = false; }
+					else 
+					{ mode_dev = true; 
+					std::cout << "mode dev activé" << std::endl;
+					}
+
 				}
 			}
 		}
@@ -196,34 +212,57 @@ int main()
 		center = carte.getCurrentCharac()->getPos();
 		window.clear(sf::Color::White);
 
-
+	//AFFICHAGE
 		for (int i(0); i < allTile.size(); i++)
 		{	
 			//affichage des tuiles
 			window.draw(*allTile[i]);
 		}
+		sf::CircleShape circle(30);
+		circle.setPosition(0, 0);
+		circle.setOutlineColor(sf::Color::Red);
+		circle.setOutlineThickness(1);
+		circle.setPosition(00, 00);
+		window.draw(circle);
 		for (int i(0); i < allEntite.size(); i++)
 		{
 			//Affichage des entités
 			window.draw(*allEntite[i]);
-			window.draw(*allEntite[i]->getHitBox());
+			if (mode_dev)
+			{
+				//affichage des hitboxes/hurtboxes
+				window.draw(*allEntite[i]->getHitBox());
+				window.draw(*allEntite[i]->getHurtBox());
+			}
 			//mise à jour des entités
-			allEntite[i]->update(dt, carte.getCurrentCharac()->getCenter());
+			allEntite[i]->update(dt, carte.getCurrentCharac()->getHitBox()->getCenter());
 		} 
 
 		//HUD//
 		window.setView(GUI);
-		window.draw(MODE);
+		window.draw(t_mode);
+		if (mode_dev) //affichage des infos de débug
+		{
+			//texte info
+			t_posx.setString("x = " + std::to_string(carte.getCurrentCharac()->getHitBox()->getCenter().x));
+			window.draw(t_posx);
+			t_posy.setString("y = " + std::to_string(carte.getCurrentCharac()->getHitBox()->getCenter().y));
+			window.draw(t_posy);
+			t_dt.setString("dt : " + std::to_string(dt));
+			window.draw(t_dt);
+		}
 		if (carte.getCurrentCharac()->getMode() == "exploration")
 		{
-			//texte
-			window.draw(posx);
-			window.draw(posy);
 			//affichage minimap
 			window.setView(minimap);
 			for (int i(0); i < allTile.size(); i++)
 			{
 				window.draw(*allTile[i]);
+			}
+			for (int i(0); i < allEntite.size(); i++)
+			{
+				//Affichage des entités
+				window.draw(*allEntite[i]);
 			}
 		}
 		else
@@ -232,7 +271,7 @@ int main()
 			if (lifeBar_red.getSize().x <= 0)
 			{
 				lifeBar_red.setSize(sf::Vector2f(0, 25));
-				std::cout << "Le joueur est décédé. Dommage il a rien pu faire" << std::endl;
+				std::cout << "Le joueur est MORT. Dommage il a rien pu faire" << std::endl;
 			}
 			if (lifeBar_red.getSize().x < lifeBar_subRed.getSize().x)
 			{
